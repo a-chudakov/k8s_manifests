@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: socks5-proxy
-        image: sergey-dryabov/socks5-proxy:latest
+        image: xkuma/socks5 
         ports:
         - containerPort: 1080
         env:
