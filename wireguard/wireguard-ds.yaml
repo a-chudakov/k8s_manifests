@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wireguard
+  namespace: wireguard
+spec:
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      hostNetwork: true
+      containers:
+      - name: wireguard
+        image: linuxserver/wireguard
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - SYS_MODULE
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        - name: modules
+          mountPath: /lib/modules
+          readOnly: true
+        volumes:
+        - name: config
+          secret:
+            secretName: wireguard-config
+            defaultMode: 0600
+        - name: modules
+          hostPath:
+            path: /lib/modules
